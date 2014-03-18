@@ -14,9 +14,9 @@ alias -g .....='../../../..'
 alias -g ......='../../../../..'
 alias -g .......='../../../../../..'
 
-# typically legit aliases. `git comimt -m 'fixed it'` is fucking hard to write all day every day.
-
-
+# elles
+alias ls="ls -lG"
+alias la="ls -laG"
 
 # i pee addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
