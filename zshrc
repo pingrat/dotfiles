@@ -1,5 +1,5 @@
-ZSH=/Users/pingrat/.oh-my-zsh
-ZSH_THEME="evan"
+ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="norm"
 CASE_SENSITIVE="true"
 DISABLE_AUTO_UPDATE="true"
 DISABLE_AUTO_TITLE="true"
