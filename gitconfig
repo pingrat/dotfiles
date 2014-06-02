@@ -1,0 +1,11 @@
+[user]
+	email = pingrat@gmail.com
+	name = pingrat
+[alias]
+	s = status
+	st = status
+	co = checkout
+	aa = add .
+	ci = commit
+	cim = commit -m
+	br = checkout -b

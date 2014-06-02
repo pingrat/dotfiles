@@ -1,16 +1,61 @@
+
 # unset a few possibly dirty variables
 unset PROMPT RPROMPT prompt rprompt
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[red]%}»%{$reset_color%} %{$fg[blue]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%} ⎇%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
+local _TEXT_DECORATIVE_COLOR='%{[38;5;066m%}'
+local _TEXT_GUTTER_COLOR='%{[38;5;234m%}'
+local _TEXT_USERNAME_NORMAL_COLOR='%{[38;5;246m%}'
+local _TEXT_USERNAME_ROOT_COLOR='%{[38;5;191m%}'
+local _TEXT_HOST_COLOR='%{[38;5;246m%}'
+local _TEXT_GITREPO_COLOR='%{[38;5;246m%}'
+local _TEXT_GITBRANCH_COLOR='%{[38;5;191m%}'
+local _TEXT_WORKDIR_COLOR='%{[38;5;111m%}'
+local _TEXT_PROMPT_COLOR='%{[38;5;065m%}'
+local _TEXT_RESET_COLOR='%{[0;0m%}'
 
-local gitprompt='$(git_prompt_info)'
+disco_version() {
+  node --version 2>/dev/null | awk '{print $1}'
+}
+
+git_repo() {
+	echo -n $(git config --local --get remote.origin.url|grep -o --color=never '[^\/]*$')
+	#echo -n $(git config --local --get remote.origin.url)
+}
+
+git_branch() {
+	ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
+	ref=$(command git rev-parse --short HEAD 2> /dev/null) || return
+	echo -n "${ref#refs/heads/}"
+}
+
+# perdy git repo info
+ZSH_THEME_GIT_PROMPT_PREFIX="$_TEXT_GUTTER_COLOR:$_TEXT_GITBRANCH_COLOR"
+ZSH_THEME_GIT_PROMPT_SUFFIX=""
+
+# 2014-05-30: added emojis to terminal prompt,
+#   we have now reached ludicrous levels of shell geekery!
+ZSH_THEME_GIT_PROMPT_DIRTY="$_TEXT_RESET_COLOR 😱 "
+ZSH_THEME_GIT_PROMPT_CLEAN="$_TEXT_RESET_COLOR 😊 "
+ZSH_THEME_GIT_PROMPT_UNTRACKED="❔ "
+ZSH_THEME_GIT_PROMPT_ADDED="🌟 "
+ZSH_THEME_GIT_PROMPT_MODIFIED="📝 "
+ZSH_THEME_GIT_PROMPT_RENAMED="⏩ "
+ZSH_THEME_GIT_PROMPT_DELETED="❌ "
+ZSH_THEME_GIT_PROMPT_UNMERGED="🔃 "
+
+local gitinfo='$(git_repo)$(git_prompt_info) $(git_prompt_status)'
 
 prompt="
-%{$fg[red]%}--%{$reset_color%}
-%{$fg[red]%}»%{$reset_color%} %{$fg[cyan]%}%d%{$reset_color%} ${gitprompt}
-%{$fg[red]%}$%{$reset_color%} "
 
-unset gitprompt
+$_TEXT_DECORATIVE_COLOR--
+$_TEXT_DECORATIVE_COLOR»$_TEXT_GUTTER_COLOR\
+ %(!.$_TEXT_USERNAME_ROOT_COLOR.$_TEXT_USERNAME_NORMAL_COLOR)%n$_TEXT_GUTTER_COLOR@$_TEXT_HOST_COLOR%M:$_TEXT_WORKDIR_COLOR%10<..<%~\
+ $_TEXT_GITREPO_COLOR${gitinfo}
+$_TEXT_DECORATIVE_COLOR$ $_TEXT_PROMPT_COLOR"
+
+preexec () {
+	print -P "\e[38;5;066m--\e[0;0m\n"
+}
+
+unset COLOR_GUTTER COLOR_WORKDIR _COLOR_REPO
+unset gitinfo

@@ -15,8 +15,8 @@ alias -g ......='../../../../..'
 alias -g .......='../../../../../..'
 
 # elles
-alias ls="ls -lG"
-alias la="ls -laG"
+alias ls="ls -lGw"
+alias la="ls -laGw"
 
 # i pee addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"

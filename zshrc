@@ -15,4 +15,4 @@ plugins=(git git-prompt)
 
 # User configuration
 
-export PATH="$HOME/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+export PATH="$HOME/.bin:$HOME/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
