@@ -14,10 +14,6 @@ local _TEXT_WORKDIR_COLOR='%{[38;5;111m%}'
 local _TEXT_PROMPT_COLOR='%{[38;5;065m%}'
 local _TEXT_RESET_COLOR='%{[0;0m%}'
 
-disco_version() {
-  node --version 2>/dev/null | awk '{print $1}'
-}
-
 git_repo() {
 	# this prints only the last part of remote.origin.url
 	echo -n $(git config --local --get remote.origin.url|grep -o --color=never '[^\/]*$')
@@ -25,7 +21,7 @@ git_repo() {
 	#echo -n $(git config --local --get remote.origin.url)
 }
 
-git_branch() {
+git_ref() {
 	ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
 	ref=$(command git rev-parse --short HEAD 2> /dev/null) || return
 	echo -n "${ref#refs/heads/}"
@@ -37,8 +33,8 @@ ZSH_THEME_GIT_PROMPT_SUFFIX=""
 
 # 2014-05-30: added emojis to terminal prompt,
 #   we have now reached ludicrous levels of shell geekery!
-ZSH_THEME_GIT_PROMPT_DIRTY="$_TEXT_RESET_COLOR 😱 "
-ZSH_THEME_GIT_PROMPT_CLEAN="$_TEXT_RESET_COLOR 😊 "
+ZSH_THEME_GIT_PROMPT_DIRTY=" 😱 $_TEXT_GUTTER_COLOR:"
+ZSH_THEME_GIT_PROMPT_CLEAN=" 😊 "
 ZSH_THEME_GIT_PROMPT_UNTRACKED="❔ "
 ZSH_THEME_GIT_PROMPT_ADDED="🌟 "
 ZSH_THEME_GIT_PROMPT_MODIFIED="📝 "
@@ -46,11 +42,11 @@ ZSH_THEME_GIT_PROMPT_RENAMED="⏩ "
 ZSH_THEME_GIT_PROMPT_DELETED="❌ "
 ZSH_THEME_GIT_PROMPT_UNMERGED="🔃 "
 
-local return_code="%(?..$_TEXT_EXIT_CODE_COLOR^- exit %?)"
-local git_info='$(git_repo)$(git_prompt_info) $(git_prompt_status)'
+local exit_code='%(?..'$_TEXT_EXIT_CODE_COLOR'^- exit %?)'
+local git_info=$_TEXT_GITREPO_COLOR'$(git_repo)$(git_prompt_info)$(git_prompt_status)'
 
 prompt="
-${return_code}
+${exit_code}
 
 $_TEXT_DECORATIVE_COLOR--
 $_TEXT_DECORATIVE_COLOR»$_TEXT_GUTTER_COLOR\
@@ -58,9 +54,19 @@ $_TEXT_DECORATIVE_COLOR»$_TEXT_GUTTER_COLOR\
  $_TEXT_GITREPO_COLOR${git_info}
 $_TEXT_DECORATIVE_COLOR$ $_TEXT_PROMPT_COLOR"
 
+chpwd () {
+
+}
+
+precmd () {
+
+}
+
 preexec () {
+	# close up the prompt box and reset the text styling
 	echo "[38;5;066m--[0;0m\n"
 }
 
-unset _TEXT_DECORATIVE_COLOR _TEXT_GUTTER_COLOR _TEXT_USERNAME_NORMAL_COLOR _TEXT_USERNAME_ROOT_COLOR _TEXT_HOST_COLOR _TEXT_GITREPO_COLOR _TEXT_GITBRANCH_COLOR _TEXT_WORKDIR_COLOR _TEXT_PROMPT_COLOR _TEXT_RESET_COLOR
-unset gitinfo
+# clean up
+unset _TEXT_EXIT_CODE_COLOR _TEXT_DECORATIVE_COLOR _TEXT_GUTTER_COLOR _TEXT_USERNAME_NORMAL_COLOR _TEXT_USERNAME_ROOT_COLOR _TEXT_HOST_COLOR _TEXT_GITREPO_COLOR _TEXT_GITBRANCH_COLOR _TEXT_WORKDIR_COLOR _TEXT_PROMPT_COLOR _TEXT_RESET_COLOR
+unset exit_code git_info
