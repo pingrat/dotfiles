@@ -32,16 +32,6 @@ alias gurl='curl --compressed'
 # weak number
 alias week='date +%V'
 
-# lazy aliases
-alias zstatus=''
-
-# node aliases
-alias n='/usr/bin/nodemon --harmony'
-
-# this is for my scaffolding implementation. no public release yet, sorry.
-alias create='/usr/bin/node --harmony /home/pingrat/code/nproject/bin/nproject init --strict --es-version=5'
-alias createnext='/usr/bin/node --harmony /home/pingrat/code/nproject/bin/nproject init --strict --es-version=6'
-
 # system aliases
 # DANGER CLOSE!
 alias mnt='mkdir -p /media/%2 && mount /dev/%1 /media/%2 && echo OK'

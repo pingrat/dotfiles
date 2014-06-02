@@ -2,6 +2,7 @@
 # unset a few possibly dirty variables
 unset PROMPT RPROMPT prompt rprompt
 
+local _TEXT_EXIT_CODE_COLOR='%{[38;5;052m%}'
 local _TEXT_DECORATIVE_COLOR='%{[38;5;066m%}'
 local _TEXT_GUTTER_COLOR='%{[38;5;234m%}'
 local _TEXT_USERNAME_NORMAL_COLOR='%{[38;5;246m%}'
@@ -18,7 +19,9 @@ disco_version() {
 }
 
 git_repo() {
+	# this prints only the last part of remote.origin.url
 	echo -n $(git config --local --get remote.origin.url|grep -o --color=never '[^\/]*$')
+	# this prints the entire remote url
 	#echo -n $(git config --local --get remote.origin.url)
 }
 
@@ -43,19 +46,21 @@ ZSH_THEME_GIT_PROMPT_RENAMED="⏩ "
 ZSH_THEME_GIT_PROMPT_DELETED="❌ "
 ZSH_THEME_GIT_PROMPT_UNMERGED="🔃 "
 
-local gitinfo='$(git_repo)$(git_prompt_info) $(git_prompt_status)'
+local return_code="%(?..$_TEXT_EXIT_CODE_COLOR^- exit %?)"
+local git_info='$(git_repo)$(git_prompt_info) $(git_prompt_status)'
 
 prompt="
+${return_code}
 
 $_TEXT_DECORATIVE_COLOR--
 $_TEXT_DECORATIVE_COLOR»$_TEXT_GUTTER_COLOR\
  %(!.$_TEXT_USERNAME_ROOT_COLOR.$_TEXT_USERNAME_NORMAL_COLOR)%n$_TEXT_GUTTER_COLOR@$_TEXT_HOST_COLOR%M:$_TEXT_WORKDIR_COLOR%10<..<%~\
- $_TEXT_GITREPO_COLOR${gitinfo}
+ $_TEXT_GITREPO_COLOR${git_info}
 $_TEXT_DECORATIVE_COLOR$ $_TEXT_PROMPT_COLOR"
 
 preexec () {
-	print -P "\e[38;5;066m--\e[0;0m\n"
+	echo "[38;5;066m--[0;0m\n"
 }
 
-unset COLOR_GUTTER COLOR_WORKDIR _COLOR_REPO
+unset _TEXT_DECORATIVE_COLOR _TEXT_GUTTER_COLOR _TEXT_USERNAME_NORMAL_COLOR _TEXT_USERNAME_ROOT_COLOR _TEXT_HOST_COLOR _TEXT_GITREPO_COLOR _TEXT_GITBRANCH_COLOR _TEXT_WORKDIR_COLOR _TEXT_PROMPT_COLOR _TEXT_RESET_COLOR
 unset gitinfo
