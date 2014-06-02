@@ -33,7 +33,7 @@ ZSH_THEME_GIT_PROMPT_SUFFIX=""
 
 # 2014-05-30: added emojis to terminal prompt,
 #   we have now reached ludicrous levels of shell geekery!
-ZSH_THEME_GIT_PROMPT_DIRTY=" 😱 $_TEXT_GUTTER_COLOR:"
+ZSH_THEME_GIT_PROMPT_DIRTY=" 😱 "
 ZSH_THEME_GIT_PROMPT_CLEAN=" 😊 "
 ZSH_THEME_GIT_PROMPT_UNTRACKED="❔ "
 ZSH_THEME_GIT_PROMPT_ADDED="🌟 "
