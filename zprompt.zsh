@@ -42,16 +42,16 @@ ZSH_THEME_GIT_PROMPT_RENAMED="⏩ "
 ZSH_THEME_GIT_PROMPT_DELETED="❌ "
 ZSH_THEME_GIT_PROMPT_UNMERGED="🔃 "
 
-local exit_code='%(?..'$_TEXT_EXIT_CODE_COLOR'^- exit %?)'
+local user_info='%(!.'$_TEXT_USERNAME_ROOT_COLOR'.'$_TEXT_USERNAME_NORMAL_COLOR')%n'$_TEXT_GUTTER_COLOR'@'$_TEXT_HOST_COLOR'%M'
+local exit_code='%(?..'$(echo -n "\a")$_TEXT_EXIT_CODE_COLOR'^- exit %?)'
 local git_info=$_TEXT_GITREPO_COLOR'$(git_repo)$(git_prompt_info)$(git_prompt_status)'
 
 prompt="
 ${exit_code}
 
 $_TEXT_DECORATIVE_COLOR--
-$_TEXT_DECORATIVE_COLOR»$_TEXT_GUTTER_COLOR\
- %(!.$_TEXT_USERNAME_ROOT_COLOR.$_TEXT_USERNAME_NORMAL_COLOR)%n$_TEXT_GUTTER_COLOR@$_TEXT_HOST_COLOR%M:$_TEXT_WORKDIR_COLOR%10<..<%~\
- $_TEXT_GITREPO_COLOR${git_info}
+$_TEXT_DECORATIVE_COLOR»\
+ ${user_info}$_TEXT_GUTTER_COLOR:$_TEXT_WORKDIR_COLOR%10<..<%~ ${git_info}
 $_TEXT_DECORATIVE_COLOR$ $_TEXT_PROMPT_COLOR"
 
 chpwd () {
